@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the jiannei/laravel-schedule.
+ *
+ * (c) jiannei <longjian.huang@foxmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Jiannei\Schedule\Laravel\Commands;
 
 use Carbon\Carbon;
@@ -17,7 +26,6 @@ class ScheduleCommandsCommand extends Command
 
     private Schedule $schedule;
 
-
     public function __construct(Schedule $schedule)
     {
         parent::__construct();
@@ -29,7 +37,7 @@ class ScheduleCommandsCommand extends Command
     {
         if (count($this->schedule->events()) > 0) {
             $events = collect($this->schedule->events())->map(function (Event $event) {
-                $command = ltrim(strtok(Str::after(str_replace("'", '', $event->command), "artisan"), ' '));
+                $command = ltrim(strtok(Str::after(str_replace("'", '', $event->command), 'artisan'), ' '));
 
                 return [
                     'description' => $event->description ?: 'N/A',

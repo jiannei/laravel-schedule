@@ -1,7 +1,15 @@
 <?php
 
-namespace Jiannei\Schedule\Laravel\Repositories\Models;
+/*
+ * This file is part of the jiannei/laravel-schedule.
+ *
+ * (c) jiannei <longjian.huang@foxmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
+namespace Jiannei\Schedule\Laravel\Repositories\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,7 +18,7 @@ class Schedule extends Model
     protected $fillable = [
         'description', 'command', 'parameters', 'expression', 'timezone',
         'active', 'without_overlap', 'run_on_one_server', 'run_in_background', 'run_in_maintenance_mode',
-        'notification_email', 'once'
+        'notification_email', 'once',
     ];
 
     protected $casts = [
