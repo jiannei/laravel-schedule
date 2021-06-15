@@ -12,8 +12,8 @@
 namespace Jiannei\Schedule\Laravel\Commands;
 
 use Illuminate\Console\Command as IlluminateCommand;
+use Illuminate\Support\Facades\Config;
 use Jiannei\Schedule\Laravel\Jobs\ScheduleJob;
-use Jiannei\Schedule\Laravel\Repositories\Enums\CommandEnum;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Process\Process;
 
@@ -21,7 +21,9 @@ abstract class Command extends IlluminateCommand
 {
     public function __construct()
     {
-        $this->description = CommandEnum::fromValue($this->name)->description;
+        $commandEnum = Config::get('schedule.enum');
+
+        $this->description = $commandEnum::fromValue($this->name)->description;
 
         parent::__construct();
 
