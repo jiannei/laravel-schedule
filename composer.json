@@ -1,0 +1,34 @@
+{
+    "name": "jiannei\/laravel-schedule",
+    "description": "Laravel schedule support.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "jiannei",
+            "email": "longjian.huang@foxmail.com"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],
+        "psr-4": {
+            "Jiannei\\Schedule\\Laravel\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Jiannei\\Schedule\\Laravel\\Providers\\ServiceProvider"
+            ]
+        }
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.5",
+        "phpunit/phpunit": "^9.5"
+    },
+    "require": {
+        "jiannei/laravel-enum": "^1.3",
+        "jenssegers/mongodb": "^3.8"
+    }
+}
