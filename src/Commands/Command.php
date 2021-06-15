@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * This file is part of the jiannei/laravel-schedule.
+ *
+ * (c) jiannei <longjian.huang@foxmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Jiannei\Schedule\Laravel\Commands;
 
@@ -37,7 +45,7 @@ abstract class Command extends IlluminateCommand
     }
 
     /**
-     * 调度 Job
+     * 调度 Job.
      *
      * @param  ScheduleJob  $job
      * @return \Laravel\Lumen\Bus\PendingDispatch|mixed
@@ -58,7 +66,7 @@ abstract class Command extends IlluminateCommand
     }
 
     /**
-     * 执行 shell 命令
+     * 执行 shell 命令.
      *
      * @param  string  $command
      * @return int|null
