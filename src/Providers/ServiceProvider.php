@@ -1,8 +1,15 @@
 <?php
 
+/*
+ * This file is part of the jiannei/laravel-schedule.
+ *
+ * (c) jiannei <longjian.huang@foxmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Jiannei\Schedule\Laravel\Providers;
-
 
 use Cron\CronExpression;
 use Illuminate\Console\Scheduling\Schedule;
@@ -69,7 +76,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     protected function setupMigration(): void
     {
-        if ($this->app->runningInConsole() && !class_exists('CreateSchedulesTable')) {
+        if ($this->app->runningInConsole() && ! class_exists('CreateSchedulesTable')) {
             $this->publishes([
                 __DIR__.'/../../database/migrations/create_schedules_table.php.stub' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_schedules_table.php'),
             ], 'migrations');
@@ -100,7 +107,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
             if (class_exists($enum = Config::get('schedule.enum'))) {
                 $commandEnum = $enum::fromValue($item->command);
-                $callbacks = ['skip', 'when', 'onSuccess', 'onFailure'];// TODO：onSuccess、onFailure 对于 job 似乎没作用
+                $callbacks = ['skip', 'when', 'onSuccess', 'onFailure']; // TODO：onSuccess、onFailure 对于 job 似乎没作用
                 foreach ($callbacks as $callback) {
                     if ($method = $commandEnum->hasTruthConstraint($callback)) {
                         $event->$callback($commandEnum->$method($event, $item));
@@ -139,7 +146,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     protected function jobProcessing(Job $job): void
     {
-        if (!$this->schedulable($job)) {
+        if (! $this->schedulable($job)) {
             return;
         }
 
@@ -167,10 +174,9 @@ class ServiceProvider extends IlluminateServiceProvider
         return false;
     }
 
-
     protected function model(): Model
     {
-        if (!class_exists($model = Config::get('schedule.result.model'))) {
+        if (! class_exists($model = Config::get('schedule.result.model'))) {
             throw new \Exception('result model config error');
         }
 
@@ -179,12 +185,12 @@ class ServiceProvider extends IlluminateServiceProvider
 
     protected function jobProcessed(Job $job): void
     {
-        if (!$this->schedulable($job)) {
+        if (! $this->schedulable($job)) {
             return;
         }
 
         $result = $this->model()::query()->where('id', $job->getJobId())->first();
-        if (!$result) {
+        if (! $result) {
             return;
         }
 
@@ -195,7 +201,7 @@ class ServiceProvider extends IlluminateServiceProvider
             'status' => 'success',
             'end' => $end,
             'processed_at' => Carbon::now()->toDateTimeString(),
-            'duration' => $duration
+            'duration' => $duration,
         ]);
     }
 }
