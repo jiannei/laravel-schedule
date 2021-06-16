@@ -195,7 +195,7 @@ class ServiceProvider extends IlluminateServiceProvider
         }
 
         $end = microtime(true);
-        $duration = formatDuration($end - $result->start);
+        $duration = format_duration($end - $result->start);
 
         $result->update([
             'status' => 'success',
