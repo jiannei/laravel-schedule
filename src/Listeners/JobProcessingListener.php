@@ -33,10 +33,7 @@ class JobProcessingListener
             'payload' => $event->job->getRawBody(),
             'status' => 'starting',
             'start' => microtime(true),
-            'end' => '',
-            'duration' => '',
             'processing_at' => Carbon::now()->toDateTimeString(),
-            'processed_at' => '',
         ]);
     }
 }

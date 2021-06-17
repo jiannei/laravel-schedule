@@ -25,7 +25,7 @@ class JobProcessedListener
             return;
         }
 
-        $jobLog = $this->jobLogModel()::query()->select('start')->where('id', $event->job->getJobId())->first();
+        $jobLog = $this->jobLogModel()::query()->where('uuid', $event->job->uuid())->first();
         if (! $jobLog) {
             return;
         }
