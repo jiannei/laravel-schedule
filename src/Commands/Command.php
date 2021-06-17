@@ -12,7 +12,6 @@
 namespace Jiannei\Schedule\Laravel\Commands;
 
 use Illuminate\Console\Command as IlluminateCommand;
-use Illuminate\Contracts\Queue\Job;
 use Illuminate\Support\Facades\Config;
 use Jiannei\Schedule\Laravel\Support\Helpers;
 use Symfony\Component\Console\Input\InputOption;
@@ -52,10 +51,10 @@ abstract class Command extends IlluminateCommand
     /**
      * 调度 Job.
      *
-     * @param  Job  $job
+     * @param  mixed  $job
      * @return \Laravel\Lumen\Bus\PendingDispatch|mixed
      */
-    protected function dispatch(Job $job)
+    protected function dispatch($job)
     {
         if (! $this->schedulable($job)) {
             $this->error($job->resolveName().' cannot be automatically scheduled, will be solved if the job implement ScheduleContract');
