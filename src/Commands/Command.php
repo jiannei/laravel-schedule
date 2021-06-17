@@ -57,9 +57,8 @@ abstract class Command extends IlluminateCommand
     protected function dispatch($job)
     {
         if (! $this->schedulable($job)) {
-            $this->error($job->resolveName().' cannot be automatically scheduled, will be solved if the job implement ScheduleContract');
-
-            return null;
+            $this->error(class_basename($job).' cannot be automatically scheduled, will be solved if the job implement ScheduleContract');
+            return false;
         }
 
         $pendingDispatch = dispatch($job);

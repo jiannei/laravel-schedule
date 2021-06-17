@@ -3,8 +3,9 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Config;
 
-class CreateScheduleJobLogs extends Migration
+class CreateScheduleJobLogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +14,7 @@ class CreateScheduleJobLogs extends Migration
      */
     public function up()
     {
-        Schema::create(Config::get('schedule.table', 'schedule_job_logs'), function (Blueprint $table) {
+        Schema::create(Config::get('schedule.job_logs.table', 'schedule_job_logs'), function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();
             $table->text('connection');
@@ -37,6 +38,6 @@ class CreateScheduleJobLogs extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(Config::get('schedule.table', 'schedule_job_logs'));
+        Schema::dropIfExists(Config::get('schedule.job_logs.table', 'schedule_job_logs'));
     }
 }
