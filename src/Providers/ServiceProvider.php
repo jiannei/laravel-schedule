@@ -13,24 +13,21 @@ namespace Jiannei\Schedule\Laravel\Providers;
 
 use Cron\CronExpression;
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Contracts\Queue\Job;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use Jiannei\Schedule\Laravel\Commands\ScheduleCommandsCommand;
-use Jiannei\Schedule\Laravel\Contracts\ScheduleContract;
+use Jiannei\Schedule\Laravel\Listeners\JobProcessedListener;
+use Jiannei\Schedule\Laravel\Listeners\JobProcessingListener;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
     public function boot(): void
     {
-        $this->setupValidationRules();
+        $this->extendValidationRules();
 
         $this->setupConfig();
 
@@ -43,20 +40,11 @@ class ServiceProvider extends IlluminateServiceProvider
                 $this->schedule($schedule);
             });
 
-            $this->listenForEvents();
+            $this->listenEvents();
         }
     }
 
-    protected function setupCommands(): void
-    {
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                ScheduleCommandsCommand::class,
-            ]);
-        }
-    }
-
-    protected function setupValidationRules(): void
+    protected function extendValidationRules(): void
     {
         Validator::extend('cron_expression', function ($attribute, $value, $parameters, $validator) {
             return CronExpression::isValidExpression($value);
@@ -80,6 +68,15 @@ class ServiceProvider extends IlluminateServiceProvider
             $this->publishes([
                 __DIR__.'/../../database/migrations/create_schedules_table.php.stub' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_schedules_table.php'),
             ], 'migrations');
+        }
+    }
+
+    protected function setupCommands(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                ScheduleCommandsCommand::class,
+            ]);
         }
     }
 
@@ -132,76 +129,10 @@ class ServiceProvider extends IlluminateServiceProvider
      *
      * @return void
      */
-    protected function listenForEvents(): void
+    protected function listenEvents(): void
     {
         // todo 监听 schedule event
-        $this->app['events']->listen(JobProcessing::class, function ($event) {
-            $this->jobProcessing($event->job);
-        });
-
-        $this->app['events']->listen(JobProcessed::class, function ($event) {
-            $this->jobProcessed($event->job);
-        });
-    }
-
-    protected function jobProcessing(Job $job): void
-    {
-        if (! $this->schedulable($job)) {
-            return;
-        }
-
-        $this->model()::query()->create([
-            'id' => $job->getJobId(),
-            'job' => $job->resolveName(),
-            'connection' => $job->getConnectionName(),
-            'queue' => $job->getQueue(),
-            'payload' => $job->getRawBody(),
-            'status' => 'starting',
-            'start' => microtime(true),
-            'end' => 0,
-            'duration' => '',
-            'processing_at' => Carbon::now()->toDateTimeString(),
-            'processed_at' => '',
-        ]);
-    }
-
-    protected function schedulable(Job $job): bool
-    {
-        if ($command = Arr::get($job->payload(), 'data.command')) {
-            return unserialize($command) instanceof ScheduleContract;
-        }
-
-        return false;
-    }
-
-    protected function model(): Model
-    {
-        if (! class_exists($model = Config::get('schedule.result.model'))) {
-            throw new \Exception('result model config error');
-        }
-
-        return app($model);
-    }
-
-    protected function jobProcessed(Job $job): void
-    {
-        if (! $this->schedulable($job)) {
-            return;
-        }
-
-        $result = $this->model()::query()->where('id', $job->getJobId())->first();
-        if (! $result) {
-            return;
-        }
-
-        $end = microtime(true);
-        $duration = format_duration($end - $result->start);
-
-        $result->update([
-            'status' => 'success',
-            'end' => $end,
-            'processed_at' => Carbon::now()->toDateTimeString(),
-            'duration' => $duration,
-        ]);
+        $this->app['events']->listen(JobProcessing::class, JobProcessingListener::class);
+        $this->app['events']->listen(JobProcessed::class, JobProcessedListener::class);
     }
 }
