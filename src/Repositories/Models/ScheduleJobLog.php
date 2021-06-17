@@ -11,7 +11,7 @@
 
 namespace Jiannei\Schedule\Laravel\Repositories\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class ScheduleJobLog extends Model
 {

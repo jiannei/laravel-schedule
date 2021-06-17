@@ -21,7 +21,7 @@ class JobProcessedListener
 
     public function handle(JobProcessed $event)
     {
-        if (! $this->schedulable($event->job)) {
+        if (! $this->schedulable($event->job->resolveName())) {
             return;
         }
 
@@ -31,7 +31,7 @@ class JobProcessedListener
         }
 
         $end = microtime(true);
-        $duration = format_duration($end - $jobLog->start);
+        $duration = format_duration($end - (float)$jobLog->start);
 
         $jobLog->update([
             'status' => 'success',

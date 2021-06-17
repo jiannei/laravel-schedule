@@ -11,7 +11,6 @@
 
 namespace Jiannei\Schedule\Laravel\Support;
 
-use Illuminate\Contracts\Queue\Job;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 use Jiannei\Schedule\Laravel\Contracts\ScheduleContract;
@@ -23,8 +22,8 @@ trait Helpers
         return app(Config::get('schedule.job_logs.model'));
     }
 
-    protected function schedulable(Job $job): bool
+    protected function schedulable($job): bool
     {
-        return is_subclass_of($job->resolveName(), ScheduleContract::class);
+        return is_subclass_of($job, ScheduleContract::class);
     }
 }

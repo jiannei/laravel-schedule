@@ -67,6 +67,7 @@ class LaravelServiceProvider extends IlluminateServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../../database/migrations/create_schedules_table.php.stub' => database_path('migrations/'.date('Y_m_d_His').'_create_schedules_table.php'),
+                __DIR__.'/../../database/migrations/create_schedule_job_logs.php.stub' => database_path('migrations/'.date('Y_m_d_His').'_create_schedule_job_logs_table.php'),
             ], 'migrations');
         }
     }

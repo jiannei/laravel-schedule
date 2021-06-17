@@ -21,7 +21,7 @@ class JobProcessingListener
 
     public function handle(JobProcessing $event)
     {
-        if (! $this->schedulable($event->job)) {
+        if (! $this->schedulable($event->job->resolveName())) {
             return;
         }
 
@@ -33,7 +33,7 @@ class JobProcessingListener
             'payload' => $event->job->getRawBody(),
             'status' => 'starting',
             'start' => microtime(true),
-            'end' => 0,
+            'end' => '',
             'duration' => '',
             'processing_at' => Carbon::now()->toDateTimeString(),
             'processed_at' => '',
