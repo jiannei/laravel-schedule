@@ -16,6 +16,6 @@ use Illuminate\Database\Eloquent\Model;
 class ScheduleJobLog extends Model
 {
     protected $fillable = [
-        'uuid','connection','queue','status','payload','duration','start','end','processing_at','processed_at'
+        'uuid', 'connection', 'queue', 'status', 'payload', 'duration', 'start', 'end', 'processing_at', 'processed_at',
     ];
 }
