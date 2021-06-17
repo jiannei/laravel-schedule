@@ -21,7 +21,7 @@ trait Helpers
     {
         $logModel = Config::get('schedule.job_logs.model');
 
-        return (new $logModel);
+        return new $logModel;
     }
 
     protected function schedulable($job): bool
