@@ -19,7 +19,6 @@ use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
-use Jiannei\Schedule\Laravel\Commands\ScheduleCommandsCommand;
 use Jiannei\Schedule\Laravel\Listeners\JobProcessedListener;
 use Jiannei\Schedule\Laravel\Listeners\JobProcessingListener;
 
@@ -32,8 +31,6 @@ class LaravelServiceProvider extends IlluminateServiceProvider
         $this->setupConfig();
 
         $this->setupMigration();
-
-        $this->setupCommands();
 
         if ($this->app->runningInConsole()) {
             $this->app->resolving(Schedule::class, function ($schedule) {
@@ -69,15 +66,6 @@ class LaravelServiceProvider extends IlluminateServiceProvider
                 __DIR__.'/../../database/migrations/create_schedules_table.php.stub' => database_path('migrations/'.date('Y_m_d_His').'_create_schedules_table.php'),
                 __DIR__.'/../../database/migrations/create_schedule_job_logs_table.php.stub' => database_path('migrations/'.date('Y_m_d_His').'_create_schedule_job_logs_table.php'),
             ], 'migrations');
-        }
-    }
-
-    protected function setupCommands(): void
-    {
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                ScheduleCommandsCommand::class,
-            ]);
         }
     }
 
