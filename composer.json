@@ -16,7 +16,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Jiannei\\Schedule\\Laravel\\Providers\\ServiceProvider"
+                "Jiannei\\Schedule\\Laravel\\Providers\\LaravelServiceProvider"
             ]
         }
     },

@@ -13,7 +13,6 @@ namespace Jiannei\Schedule\Laravel\Support;
 
 use Illuminate\Contracts\Queue\Job;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use Jiannei\Schedule\Laravel\Contracts\ScheduleContract;
 
@@ -26,10 +25,6 @@ trait Helpers
 
     protected function schedulable(Job $job): bool
     {
-        if ($command = Arr::get($job->payload(), 'data.command')) {
-            return unserialize($command) instanceof ScheduleContract;
-        }
-
-        return false;
+        return is_subclass_of($job->resolveName(), ScheduleContract::class);
     }
 }

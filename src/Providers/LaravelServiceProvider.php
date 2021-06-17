@@ -23,7 +23,7 @@ use Jiannei\Schedule\Laravel\Commands\ScheduleCommandsCommand;
 use Jiannei\Schedule\Laravel\Listeners\JobProcessedListener;
 use Jiannei\Schedule\Laravel\Listeners\JobProcessingListener;
 
-class ServiceProvider extends IlluminateServiceProvider
+class LaravelServiceProvider extends IlluminateServiceProvider
 {
     public function boot(): void
     {
@@ -66,7 +66,7 @@ class ServiceProvider extends IlluminateServiceProvider
     {
         if ($this->app->runningInConsole() && ! class_exists('CreateSchedulesTable')) {
             $this->publishes([
-                __DIR__.'/../../database/migrations/create_schedules_table.php.stub' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_schedules_table.php'),
+                __DIR__.'/../../database/migrations/create_schedules_table.php.stub' => database_path('migrations/'.date('Y_m_d_His').'_create_schedules_table.php'),
             ], 'migrations');
         }
     }
@@ -132,6 +132,7 @@ class ServiceProvider extends IlluminateServiceProvider
     protected function listenEvents(): void
     {
         // todo 监听 schedule event
+        // 监听 Job 处理事件，需要区分普通 Job、可以自动调度的 Job
         $this->app['events']->listen(JobProcessing::class, JobProcessingListener::class);
         $this->app['events']->listen(JobProcessed::class, JobProcessedListener::class);
     }
