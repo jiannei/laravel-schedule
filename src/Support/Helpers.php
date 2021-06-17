@@ -18,9 +18,9 @@ use Jiannei\Schedule\Laravel\Contracts\ScheduleContract;
 
 trait Helpers
 {
-    protected function resultModel(): Model
+    protected function jobLogModel(): Model
     {
-        return app(Config::get('schedule.result.model'));
+        return app(Config::get('schedule.job_logs.model'));
     }
 
     protected function schedulable(Job $job): bool

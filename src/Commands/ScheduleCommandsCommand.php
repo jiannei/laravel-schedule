@@ -35,27 +35,23 @@ class ScheduleCommandsCommand extends Command
 
     public function handle(): void
     {
-        if (count($this->schedule->events()) > 0) {
-            $events = collect($this->schedule->events())->map(function (Event $event) {
-                $command = ltrim(strtok(Str::after(str_replace("'", '', $event->command), 'artisan'), ' '));
+        $events = collect($this->schedule->events())->map(function (Event $event) {
+            $command = ltrim(strtok(Str::after(str_replace("'", '', $event->command), 'artisan'), ' '));
 
-                return [
-                    'description' => $event->description ?: 'N/A',
-                    'command' => $command,
-                    'parameters' => trim(Str::after($event->command, $command)),
-                    'schedule' => $event->expression,
-                    'upcoming' => $this->upcoming($event),
-                    'timezone' => $event->timezone ?: config('app.timezone'),
-                    'overlaps' => $event->withoutOverlapping ? 'Yes' : 'No',
-                    'maintenance' => $event->evenInMaintenanceMode ? 'Yes' : 'No',
-                    'oneServer' => $event->onOneServer ? 'Yes' : 'No',
-                ];
-            });
+            return [
+                'description' => $event->description ?: 'N/A',
+                'command' => $command,
+                'parameters' => trim(Str::after($event->command, $command)),
+                'schedule' => $event->expression,
+                'upcoming' => $this->upcoming($event),
+                'timezone' => $event->timezone ?: config('app.timezone'),
+                'overlaps' => $event->withoutOverlapping ? 'Yes' : 'No',
+                'maintenance' => $event->evenInMaintenanceMode ? 'Yes' : 'No',
+                'oneServer' => $event->onOneServer ? 'Yes' : 'No',
+            ];
+        });
 
-            $this->table($this->headers(), $events);
-        } else {
-            $this->info('No Scheduled Commands Found');
-        }
+        $this->table($this->headers(), $events);
     }
 
     protected function upcoming(Event $event): string

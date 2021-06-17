@@ -64,7 +64,7 @@ class LaravelServiceProvider extends IlluminateServiceProvider
 
     protected function setupMigration(): void
     {
-        if ($this->app->runningInConsole() && ! class_exists('CreateSchedulesTable')) {
+        if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../../database/migrations/create_schedules_table.php.stub' => database_path('migrations/'.date('Y_m_d_His').'_create_schedules_table.php'),
             ], 'migrations');

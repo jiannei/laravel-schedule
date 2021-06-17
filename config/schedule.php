@@ -16,7 +16,9 @@ return [
 
     'model' => \Jiannei\Schedule\Laravel\Repositories\Models\Schedule::class,
 
-    'result' => [
-        'model' => \Jiannei\Schedule\Laravel\Repositories\Models\ScheduleResult::class,
+    'job_logs' => [
+        'table' => 'schedule_job_logs',
+
+        'model' => \Jiannei\Schedule\Laravel\Repositories\Models\ScheduleJobLog::class,
     ],
 ];

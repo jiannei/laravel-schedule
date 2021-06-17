@@ -25,8 +25,8 @@ class JobProcessingListener
             return;
         }
 
-        $this->resultModel()::query()->create([
-            'id' => $event->job->getJobId(),
+        $this->jobLogModel()::query()->create([
+            'uuid' => $event->job->uuid(),
             'job' => $event->job->resolveName(),
             'connection' => $event->job->getConnectionName(),
             'queue' => $event->job->getQueue(),

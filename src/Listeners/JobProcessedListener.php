@@ -25,15 +25,15 @@ class JobProcessedListener
             return;
         }
 
-        $result = $this->resultModel()::query()->where('id', $event->job->getJobId())->first();
-        if (! $result) {
+        $jobLog = $this->jobLogModel()::query()->select('start')->where('id', $event->job->getJobId())->first();
+        if (! $jobLog) {
             return;
         }
 
         $end = microtime(true);
-        $duration = format_duration($end - $result->start);
+        $duration = format_duration($end - $jobLog->start);
 
-        $result->update([
+        $jobLog->update([
             'status' => 'success',
             'end' => $end,
             'processed_at' => Carbon::now()->toDateTimeString(),
