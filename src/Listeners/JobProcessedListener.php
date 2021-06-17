@@ -31,7 +31,7 @@ class JobProcessedListener
         }
 
         $end = microtime(true);
-        $duration = format_duration($end - (float)$jobLog->start);
+        $duration = format_duration($end - (float) $jobLog->start);
 
         $jobLog->update([
             'status' => 'success',

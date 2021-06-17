@@ -58,6 +58,7 @@ abstract class Command extends IlluminateCommand
     {
         if (! $this->schedulable($job)) {
             $this->error(class_basename($job).' cannot be automatically scheduled, will be solved if the job implement ScheduleContract');
+
             return false;
         }
 
