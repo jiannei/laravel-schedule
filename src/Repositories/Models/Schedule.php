@@ -16,18 +16,18 @@ use Illuminate\Database\Eloquent\Model;
 class Schedule extends Model
 {
     protected $fillable = [
-        'description', 'command', 'parameters', 'expression', 'timezone',
-        'active', 'without_overlap', 'run_on_one_server', 'run_in_background', 'run_in_maintenance_mode',
-        'notification_email', 'once',
+        'description', 'command', 'parameters', 'expression', 'active','timezone',
+        'environments', 'without_overlapping', 'on_one_server', 'in_background', 'in_maintenance_mode',
+        'output_file_path', 'output_append','output_email','output_email_on_failure'
     ];
 
     protected $casts = [
         'active' => 'boolean',
-        'once' => 'boolean',
-        'without_overlap' => 'boolean',
-        'run_on_one_server' => 'boolean',
-        'run_in_background' => 'boolean',
-        'run_in_maintenance_mode' => 'boolean',
+        'on_one_server' => 'boolean',
+        'in_background' => 'boolean',
+        'in_maintenance_mode' => 'boolean',
+        'output_append' => 'boolean',
+        'output_email_on_failure' => 'boolean',
     ];
 
     /**

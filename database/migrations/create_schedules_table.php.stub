@@ -20,16 +20,19 @@ class CreateSchedulesTable extends Migration
             $table->string('command')->default('');
             $table->string('parameters')->nullable();
             $table->string('expression')->default('');
-            $table->string('timezone');
             $table->boolean('active')->default(false);
-            $table->boolean('once')->default(false);
-            $table->unsignedInteger('without_overlap')->default(0);
-            $table->boolean('run_on_one_server')->default(false);
-            $table->boolean('run_in_background')->default(false);
-            $table->boolean('run_in_maintenance_mode')->default(false);
-            $table->string('notification_email')->nullable();
-
+            $table->string('timezone');
+            $table->json('environments')->nullable();
+            $table->unsignedInteger('without_overlapping')->default(0);
+            $table->boolean('on_one_server')->default(false);
+            $table->boolean('in_background')->default(false);
+            $table->boolean('in_maintenance_mode')->default(false);
+            $table->string('output_file_path')->nullable();
+            $table->boolean('output_append')->default(false);
+            $table->string('output_email')->nullable();
+            $table->boolean('output_email_on_failure')->default(false);
             $table->timestamps();
+
             $table->index('active');
             $table->index('command');
         });

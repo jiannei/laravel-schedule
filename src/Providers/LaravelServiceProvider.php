@@ -81,8 +81,7 @@ class LaravelServiceProvider extends IlluminateServiceProvider
 
             $event->cron($item->expression)
                 ->name($item->description)
-                ->timezone($item->timezone)
-                ->runInBackground();
+                ->timezone($item->timezone);
 
             if (class_exists($enum = Config::get('schedule.enum'))) {
                 $commandEnum = $enum::fromValue($item->command);
@@ -94,14 +93,40 @@ class LaravelServiceProvider extends IlluminateServiceProvider
                 }
             }
 
-            if ($item->without_overlap) {
-                $event->withoutOverlapping();
+            if ($item->environments) {
+                $event->environments($item->environments);
             }
-            if ($item->run_in_maintenance_mode) {
+
+            if ($item->without_overlapping) {
+                $event->withoutOverlapping($item->without_overlapping);
+            }
+
+            if ($item->on_one_server) {
+                $event->onOneServer();
+            }
+
+            if ($item->in_background) {
+                $event->runInBackground();
+            }
+
+            if ($item->in_maintenance_mode) {
                 $event->evenInMaintenanceMode();
             }
-            if ($item->run_on_one_server) {
-                $event->onOneServer();
+
+            if ($item->output_file_path) {
+                if ($item->output_append) {
+                    $event->appendOutputTo($item->output_file_path);
+                } else {
+                    $event->sendOutputTo($item->output_file_path);
+                }
+            }
+
+            if ($item->output_email) {
+                if ($item->output_email_on_failure) {
+                    $event->emailOutputOnFailure($item->output_email);
+                } else {
+                    $event->emailOutputTo($item->output_email);
+                }
             }
         });
     }
