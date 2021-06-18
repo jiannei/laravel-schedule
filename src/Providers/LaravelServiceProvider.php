@@ -17,6 +17,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use Illuminate\Support\Str;
 
 class LaravelServiceProvider extends IlluminateServiceProvider
 {
@@ -115,9 +116,9 @@ class LaravelServiceProvider extends IlluminateServiceProvider
 
             if ($item->output_file_path) {
                 if ($item->output_append) {
-                    $event->appendOutputTo($item->output_file_path);
+                    $event->appendOutputTo(Config::get('schedule.output.path').Str::start($item->output_file_path, DIRECTORY_SEPARATOR));
                 } else {
-                    $event->sendOutputTo($item->output_file_path);
+                    $event->sendOutputTo(Config::get('schedule.output.path').Str::start($item->output_file_path, DIRECTORY_SEPARATOR));
                 }
             }
 
