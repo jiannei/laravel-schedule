@@ -13,14 +13,11 @@ namespace Jiannei\Schedule\Laravel\Commands;
 
 use Illuminate\Console\Command as IlluminateCommand;
 use Illuminate\Support\Facades\Config;
-use Jiannei\Schedule\Laravel\Support\Helpers;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Process\Process;
 
 abstract class Command extends IlluminateCommand
 {
-    use Helpers;
-
     public function __construct()
     {
         $commandEnum = Config::get('schedule.enum');
@@ -56,12 +53,6 @@ abstract class Command extends IlluminateCommand
      */
     protected function dispatch($job)
     {
-        if (! $this->schedulable($job)) {
-            $this->error(class_basename($job).' cannot be automatically scheduled, will be solved if the job implement ScheduleContract');
-
-            return false;
-        }
-
         $pendingDispatch = dispatch($job);
 
         if ($queue = $this->option('queue')) {

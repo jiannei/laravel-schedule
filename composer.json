@@ -25,7 +25,6 @@
         "phpunit/phpunit": "^9.5"
     },
     "require": {
-        "jiannei/laravel-enum": "^1.3",
-        "jiannei/helpers": "^0.2.1"
+        "jiannei/laravel-enum": "^1.3"
     }
 }

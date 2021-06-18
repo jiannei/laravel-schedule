@@ -14,13 +14,9 @@ namespace Jiannei\Schedule\Laravel\Providers;
 use Cron\CronExpression;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\QueryException;
-use Illuminate\Queue\Events\JobProcessed;
-use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
-use Jiannei\Schedule\Laravel\Listeners\JobProcessedListener;
-use Jiannei\Schedule\Laravel\Listeners\JobProcessingListener;
 
 class LaravelServiceProvider extends IlluminateServiceProvider
 {
@@ -36,8 +32,6 @@ class LaravelServiceProvider extends IlluminateServiceProvider
             $this->app->resolving(Schedule::class, function ($schedule) {
                 $this->schedule($schedule);
             });
-
-            $this->listenEvents();
         }
     }
 
@@ -64,7 +58,6 @@ class LaravelServiceProvider extends IlluminateServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../../database/migrations/create_schedules_table.php.stub' => database_path('migrations/'.date('Y_m_d_His').'_create_schedules_table.php'),
-                __DIR__.'/../../database/migrations/create_schedule_job_logs_table.php.stub' => database_path('migrations/'.date('Y_m_d_His').'_create_schedule_job_logs_table.php'),
             ], 'migrations');
         }
     }
@@ -111,18 +104,5 @@ class LaravelServiceProvider extends IlluminateServiceProvider
                 $event->onOneServer();
             }
         });
-    }
-
-    /**
-     * Listen for the queue events in order to update the console output.
-     *
-     * @return void
-     */
-    protected function listenEvents(): void
-    {
-        // todo 监听 schedule event
-        // 监听 Job 处理事件，需要区分普通 Job、可以自动调度的 Job
-        $this->app['events']->listen(JobProcessing::class, JobProcessingListener::class);
-        $this->app['events']->listen(JobProcessed::class, JobProcessedListener::class);
     }
 }

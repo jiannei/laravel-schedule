@@ -15,10 +15,4 @@ return [
     'enum' => \Jiannei\Schedule\Laravel\Repositories\Enums\CommandEnum::class,
 
     'model' => \Jiannei\Schedule\Laravel\Repositories\Models\Schedule::class,
-
-    'job_logs' => [
-        'table' => 'schedule_job_logs',
-
-        'model' => \Jiannei\Schedule\Laravel\Repositories\Models\ScheduleJobLog::class,
-    ],
 ];
