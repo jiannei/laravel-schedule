@@ -16,9 +16,9 @@ use Illuminate\Database\Eloquent\Model;
 class Schedule extends Model
 {
     protected $fillable = [
-        'description', 'command', 'parameters', 'expression', 'active','timezone',
+        'description', 'command', 'parameters', 'expression', 'active', 'timezone',
         'environments', 'without_overlapping', 'on_one_server', 'in_background', 'in_maintenance_mode',
-        'output_file_path', 'output_append','output_email','output_email_on_failure'
+        'output_file_path', 'output_append', 'output_email', 'output_email_on_failure',
     ];
 
     protected $casts = [
