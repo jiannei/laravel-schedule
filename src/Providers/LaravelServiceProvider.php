@@ -12,12 +12,18 @@
 namespace Jiannei\Schedule\Laravel\Providers;
 
 use Cron\CronExpression;
+use Illuminate\Console\Events\ScheduledTaskFailed;
+use Illuminate\Console\Events\ScheduledTaskFinished;
+use Illuminate\Console\Events\ScheduledTaskStarting;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use Illuminate\Support\Str;
+use Jiannei\Schedule\Laravel\Listeners\ScheduledTaskFailedListener;
+use Jiannei\Schedule\Laravel\Listeners\ScheduledTaskFinishedListener;
+use Jiannei\Schedule\Laravel\Listeners\ScheduledTaskStartingListener;
 
 class LaravelServiceProvider extends IlluminateServiceProvider
 {
@@ -27,13 +33,22 @@ class LaravelServiceProvider extends IlluminateServiceProvider
 
         $this->setupConfig();
 
-        $this->setupMigration();
-
         if ($this->app->runningInConsole()) {
+            $this->setupMigration();
+
+            $this->listenEvents();
+
             $this->app->resolving(Schedule::class, function ($schedule) {
                 $this->schedule($schedule);
             });
         }
+    }
+
+    protected function listenEvents(): void
+    {
+        $this->app['events']->listen(ScheduledTaskStarting::class, ScheduledTaskStartingListener::class);
+        $this->app['events']->listen(ScheduledTaskFinished::class, ScheduledTaskFinishedListener::class);
+        $this->app['events']->listen(ScheduledTaskFailed::class, ScheduledTaskFailedListener::class);
     }
 
     protected function extendValidationRules(): void
@@ -56,11 +71,9 @@ class LaravelServiceProvider extends IlluminateServiceProvider
 
     protected function setupMigration(): void
     {
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__.'/../../database/migrations/create_schedules_table.php.stub' => database_path('migrations/'.date('Y_m_d_His').'_create_schedules_table.php'),
-            ], 'migrations');
-        }
+        $this->publishes([
+            __DIR__.'/../../database/migrations/create_schedules_table.php.stub' => database_path('migrations/'.date('Y_m_d_His').'_create_schedules_table.php'),
+        ], 'migrations');
     }
 
     /**
@@ -77,7 +90,6 @@ class LaravelServiceProvider extends IlluminateServiceProvider
         }
 
         $schedules->each(function ($item) use ($schedule) {
-            //  todo 分片逻辑
             $event = $schedule->command($item->command.' '.$item->parameters);
 
             $event->cron($item->expression)
@@ -85,11 +97,11 @@ class LaravelServiceProvider extends IlluminateServiceProvider
                 ->timezone($item->timezone);
 
             if (class_exists($enum = Config::get('schedule.enum'))) {
-                $commandEnum = $enum::fromValue($item->command);
-                $callbacks = ['skip', 'when', 'onSuccess', 'onFailure']; // TODO：onSuccess、onFailure 对于 job 似乎没作用
+                $scheduleEnum = $enum::fromValue($item->command);
+                $callbacks = ['skip', 'when', 'before', 'after', 'onSuccess', 'onFailure'];
                 foreach ($callbacks as $callback) {
-                    if ($method = $commandEnum->hasTruthConstraint($callback)) {
-                        $event->$callback($commandEnum->$method($event, $item));
+                    if ($method = $scheduleEnum->hasCallback($callback)) {
+                        $event->$callback($scheduleEnum->$method($event, $item));
                     }
                 }
             }

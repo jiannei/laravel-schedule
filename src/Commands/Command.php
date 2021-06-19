@@ -20,9 +20,9 @@ abstract class Command extends IlluminateCommand
 {
     public function __construct()
     {
-        $commandEnum = Config::get('schedule.enum');
+        $scheduleEnum = Config::get('schedule.enum');
 
-        $this->description = $commandEnum::fromValue($this->name)->description;
+        $this->description = $scheduleEnum::fromValue($this->name)->description;
 
         parent::__construct();
 

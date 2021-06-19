@@ -12,7 +12,7 @@
 return [
     'table' => 'schedules',
 
-    'enum' => \Jiannei\Schedule\Laravel\Repositories\Enums\CommandEnum::class,
+    'enum' => \Jiannei\Schedule\Laravel\Repositories\Enums\ScheduleEnum::class,
 
     'model' => \Jiannei\Schedule\Laravel\Repositories\Models\Schedule::class,
 
