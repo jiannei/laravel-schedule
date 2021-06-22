@@ -1,6 +1,9 @@
 {
     "name": "jiannei\/laravel-schedule",
-    "description": "Laravel schedule support.",
+    "description": "More flexible way to manage your Laravel schedule tasks.",
+    "keywords": [
+        "laravel","schedule"
+    ],
     "license": "MIT",
     "authors": [
         {
