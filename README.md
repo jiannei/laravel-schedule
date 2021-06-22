@@ -61,7 +61,7 @@ INSERT INTO `schedules` (`id`, `description`, `command`, `parameters`, `expressi
 > - output_append，command 输出到文件时是否进行追加
 > - output_email，command 输出发送邮件
 > - output_email_on_failure，只在 command 执行失败时发送输出到邮件
-> - 其他参数均可以在 laravel schedule 文档中找到相应的函数说明：
+> - 其他参数均可以在 laravel schedule 文档中找到相应的函数说明：https://laravel.com/docs/8.x/scheduling#introduction
 
 - 通过`php artisan schedule:list`检验是否配置成功
 
@@ -75,7 +75,9 @@ INSERT INTO `schedules` (`id`, `description`, `command`, `parameters`, `expressi
 +------------------------------------------------------------------------+--------------+--------------------------+----------------------------+
 ```
 
-- 重启 `php artisan schedule:run` 服务，基于 schedules 数据表的配置来完成任务调度
+- 重启应用程序中的 `php artisan schedule:run`
+
+以上，基于 schedules 数据表来管理调度任务变完成了。
 
 ## 协议
 
