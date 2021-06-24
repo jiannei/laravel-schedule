@@ -19,13 +19,13 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Jiannei\Schedule\Laravel\Listeners\ScheduledTaskFailedListener;
 use Jiannei\Schedule\Laravel\Listeners\ScheduledTaskFinishedListener;
 use Jiannei\Schedule\Laravel\Listeners\ScheduledTaskStartingListener;
 
-class LaravelServiceProvider extends IlluminateServiceProvider
+class LaravelServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {

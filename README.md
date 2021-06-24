@@ -49,7 +49,7 @@ php artisan migrate
 
 ## 使用
 
-为了能够更容易地集成到各种项目中，该扩展包并未直接提供一个 web 界面来维护 schedules 数据表，实现起来也很简单。
+为了能够更容易地集成到各种项目中，该扩展包并未直接提供一个 web 界面来维护 schedules 数据表，你可以按你的方式把 schedules 的配置维护进去就好。
 
 举例说明项目中的使用方式：
 
@@ -86,7 +86,7 @@ INSERT INTO `schedules` (`id`, `description`, `command`, `parameters`, `expressi
 
 - 重启应用程序中的 `php artisan schedule:run`
 
-以上，基于 schedules 数据表来管理调度任务变完成了。
+以上，基于 schedules 数据表来管理调度任务就完成了。
 
 ## 协议
 
