@@ -17,6 +17,6 @@ return [
     'model' => \Jiannei\Schedule\Laravel\Repositories\Models\Schedule::class,
 
     'output' => [
-        'path' => storage_path('schedule'),
+        'path' => storage_path('logs'),
     ],
 ];
