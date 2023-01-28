@@ -83,26 +83,24 @@ class LaravelServiceProvider extends ServiceProvider
      */
     protected function schedule(Schedule $schedule): void
     {
+        $commands = app(\Illuminate\Contracts\Console\Kernel::class)->all();
+
         try {
             $schedules = app(Config::get('schedule.model'))->active()->get();
         } catch (QueryException $exception) {
             $schedules = collect();
         }
 
-        $schedules->each(function ($item) use ($schedule) {
+        $schedules->each(function ($item) use ($schedule, $commands) {
             $event = $schedule->command($item->command.' '.$item->parameters);
-
             $event->cron($item->expression)
                 ->name($item->description)
                 ->timezone($item->timezone);
 
-            if (class_exists($enum = Config::get('schedule.enum'))) {
-                $scheduleEnum = $enum::fromValue($item->command);
-                $callbacks = ['skip', 'when', 'before', 'after', 'onSuccess', 'onFailure'];
-                foreach ($callbacks as $callback) {
-                    if ($method = $scheduleEnum->hasCallback($callback)) {
-                        $event->$callback($scheduleEnum->$method($event, $item));
-                    }
+            $callbacks = ['skip', 'when', 'before', 'after', 'onSuccess', 'onFailure'];
+            foreach ($callbacks as $callback) {
+                if (isset($commands[$item->command]) && method_exists($commands[$item->command], $callback)) {
+                    $event->$callback($commands[$item->command]->$callback($event, $item));
                 }
             }
 
