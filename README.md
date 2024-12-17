@@ -3,11 +3,11 @@
 > ⏱ More flexible way to manage your Laravel schedule tasks. - 更灵活地管理 Laravel 应用中的任务调度。
 
 ![StyleCI](https://github.styleci.io/repos/377056763/shield?style=flat&branch=main)
-[![Latest Stable Version](http://poser.pugx.org/jiannei/laravel-schedule/v)](https://packagist.org/packages/jiannei/laravel-schedule)
-[![Total Downloads](http://poser.pugx.org/jiannei/laravel-schedule/downloads)](https://packagist.org/packages/jiannei/laravel-schedule)
-[![Monthly Downloads](http://poser.pugx.org/jiannei/laravel-schedule/d/monthly)](https://packagist.org/packages/jiannei/laravel-schedule)
-[![Version](http://poser.pugx.org/jiannei/laravel-schedule/version)](https://packagist.org/packages/jiannei/laravel-schedule)
-[![License](http://poser.pugx.org/jiannei/laravel-schedule/license)](https://packagist.org/packages/jiannei/laravel-schedule)
+[![Latest Stable Version](https://poser.pugx.org/jiannei/laravel-schedule/v)](https://packagist.org/packages/jiannei/laravel-schedule)
+[![Total Downloads](https://poser.pugx.org/jiannei/laravel-schedule/downloads)](https://packagist.org/packages/jiannei/laravel-schedule)
+[![Monthly Downloads](https://poser.pugx.org/jiannei/laravel-schedule/d/monthly)](https://packagist.org/packages/jiannei/laravel-schedule)
+[![Version](https://poser.pugx.org/jiannei/laravel-schedule/version)](https://packagist.org/packages/jiannei/laravel-schedule)
+[![License](https://poser.pugx.org/jiannei/laravel-schedule/license)](https://packagist.org/packages/jiannei/laravel-schedule)
 
 ## 社区讨论文章
 
