@@ -15,7 +15,5 @@ use Illuminate\Console\Events\ScheduledTaskStarting;
 
 class ScheduledTaskStartingListener
 {
-    public function handle(ScheduledTaskStarting $event)
-    {
-    }
+    public function handle(ScheduledTaskStarting $event) {}
 }

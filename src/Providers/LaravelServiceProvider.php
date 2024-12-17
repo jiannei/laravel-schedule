@@ -78,8 +78,6 @@ class LaravelServiceProvider extends ServiceProvider
 
     /**
      * Prepare schedule from tasks.
-     *
-     * @param  Schedule  $schedule
      */
     protected function schedule(Schedule $schedule): void
     {

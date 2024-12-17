@@ -68,9 +68,6 @@ abstract class Command extends IlluminateCommand
 
     /**
      * 执行 shell 命令.
-     *
-     * @param  string  $command
-     * @return int|null
      */
     protected function exec(string $command): ?int
     {

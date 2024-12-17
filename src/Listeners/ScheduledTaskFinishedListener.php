@@ -15,7 +15,5 @@ use Illuminate\Console\Events\ScheduledTaskFinished;
 
 class ScheduledTaskFinishedListener
 {
-    public function handle(ScheduledTaskFinished $event)
-    {
-    }
+    public function handle(ScheduledTaskFinished $event) {}
 }
