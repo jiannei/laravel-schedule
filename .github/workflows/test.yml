@@ -1,0 +1,52 @@
+name: Test
+
+on:
+    push:
+        branches: [ main ]
+    pull_request:
+        branches: [ main ]
+
+jobs:
+    tests:
+        name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
+        runs-on: ${{ matrix.os }}
+        strategy:
+            fail-fast: false
+            matrix:
+                os: [ ubuntu-latest ]
+                php: [8.2]
+                laravel: [ 11.* ]
+                dependency-version: [ prefer-stable ]
+                include:
+                    - laravel: 11.*
+                      testbench: 9.*
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Validate composer.json and composer.lock
+              run: composer validate --strict
+
+            - name: Cache Composer packages
+              uses: actions/cache@v4
+              with:
+                  path: vendor
+                  key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-php-
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  extensions: curl, mbstring, zip, pcntl, sqlite, pdo_sqlite, iconv
+                  coverage: none
+
+            - name: Install dependencies - L${{ matrix.laravel }}
+              run: |
+                  composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+                  composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
+
+            - name: Execute tests
+              run: vendor/bin/pest

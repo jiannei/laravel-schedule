@@ -24,7 +24,17 @@
         }
     },
     "require-dev": {
-        "orchestra/testbench": "^6.5",
-        "phpunit/phpunit": "^9.5"
+        "orchestra/testbench": "^9.8.0",
+        "pestphp/pest": "^3.5",
+        "laravel/pint": "^1.18.3"
+    },
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "style": "vendor/bin/pint"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     }
 }
