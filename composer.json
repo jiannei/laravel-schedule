@@ -24,7 +24,7 @@
         }
     },
     "require-dev": {
-        "orchestra/testbench": "^9.8.0",
+        "orchestra/testbench": "^10.1.0",
         "pestphp/pest": "^3.5",
         "laravel/pint": "^1.18.3"
     },
